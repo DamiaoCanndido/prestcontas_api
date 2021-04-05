@@ -1,15 +1,17 @@
 import { Request, Response, NextFunction } from "express";
+import { AdminRepository } from "../repositories/AdminRepository";
 import jwt from "jsonwebtoken";
+import { getCustomRepository } from "typeorm";
 
 interface TokenPayload {
     id: string,
-    type: string,
     iat: number,
     exp: number,
 }
 
 class AuthMiddleware {
     async auth(request: Request, response: Response, next: NextFunction){
+        const adminRepository = getCustomRepository(AdminRepository);
         const { authorization } = request.headers;
 
         if(!authorization) {
@@ -22,9 +24,10 @@ class AuthMiddleware {
 
         try {
             const data = jwt.verify(token, process.env.JWT_SECRET);
-            const { id, type  } = data as TokenPayload;
+            const { id } = data as TokenPayload;
             request.userId = id;
-            request.userType = type;
+            const user = await adminRepository.findOne({id: request.userId});
+            request.userType = user.type;
             return next();
         } catch(err) {
             return response.status(401).json({

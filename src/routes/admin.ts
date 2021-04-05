@@ -6,12 +6,10 @@ import AuthMiddleware from "../middlewares/AuthMiddleware";
 const router = express.Router();
 
 router.post('/admin/auth', AuthAdminController.create);
+router.post('/admin', AdminController.create);
 
 // todas as rotas abaixo serão autenticadas
-router.use(AuthMiddleware.auth);
-router.use(AuthMiddleware.protect());
-
-router.get('/admin', AdminController.index);
-router.delete('/admin/:id', AdminController.destroy);
+router.get('/admin', AuthMiddleware.auth, AuthMiddleware.protect(), AdminController.index);
+router.delete('/admin/:id', AuthMiddleware.auth, AuthMiddleware.protect(), AdminController.destroy);
 
 export default router;

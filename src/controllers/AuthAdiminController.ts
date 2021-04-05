@@ -16,7 +16,7 @@ class AuthAdminController {
                 }) 
         }
 
-        const admin = await adminRepository.findOne({ email });
+        const admin = await adminRepository.findOne({ email }, { select: ["password"] });
         
         if (!admin) {
             return response.status(401).json({ error: 'Usuário não existe.' });
@@ -28,9 +28,9 @@ class AuthAdminController {
             return response.status(401).json({ error: 'Senha não confere.' });
         }
 
-        const { id, name, type } = admin;
+        const { id, name } = admin;
 
-        const token = jwt.sign({ id: id, type: type }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIREIN,
         });
 
@@ -42,7 +42,7 @@ class AuthAdminController {
 
         return response
             .cookie("token", token, options)
-            .json({ id, name, email, type, token }
+            .json({ id, name, email, token }
         );
     }
 

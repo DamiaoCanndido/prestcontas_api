@@ -7,9 +7,6 @@ class AdminController {
     async index(request: Request, response: Response){
         const adminRepository = getCustomRepository(AdminRepository);
         const allAdmins = await adminRepository.find();
-        allAdmins.map((adm) => {
-            delete adm.password;
-        })
         return response.status(200).json(allAdmins);
     }
 

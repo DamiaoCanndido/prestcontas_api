@@ -28,9 +28,9 @@ class AuthProviderController {
             return response.status(401).json({ error: 'Senha não confere.' });
         }
 
-        const { id, name, type } = provider[0];
+        const { id, name } = provider[0];
 
-        const token = jwt.sign({ id: id, type: type }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIREIN,
         });
 
@@ -42,7 +42,7 @@ class AuthProviderController {
 
         return response
             .cookie("token", token, options)
-            .json({ id, name, email, type, token }
+            .json({ id, name, email, token }
         );
     }
 

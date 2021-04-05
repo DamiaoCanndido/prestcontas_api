@@ -21,10 +21,8 @@ router.post('/provider/auth', AuthProviderController.create);
 // todas as rotas abaixo serão autenticadas
 router.use(AuthMiddleware.auth);
 
-
-router.get('/provider/auth', AuthProviderController.logout);
-
 router.get('/provider', ProviderController.index);
+router.get('/provider/auth', AuthProviderController.logout);
 router.post('/provider', AuthMiddleware.protect(), ProviderController.create);
 router.delete('/provider/:id', ProviderController.destroy);
 

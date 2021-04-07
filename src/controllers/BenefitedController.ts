@@ -26,11 +26,8 @@ class BenefitedController {
             name, 
             cpf,
             phone,
-            city,
-            type,
-            district,
-            street,
             number,
+            zone_id,
             latitude,
             longitude,
         } = request.body;
@@ -38,10 +35,6 @@ class BenefitedController {
         if (
             !name ||
             !cpf ||
-            !city ||
-            !type ||
-            !district||
-            !street ||
             !latitude ||
             !longitude) {
                 return response.status(400).json({
@@ -67,11 +60,8 @@ class BenefitedController {
             name, 
             cpf,
             phone,
-            city,
-            type,
-            district,
-            street,
             number,
+            zone_id,
             latitude,
             longitude,
         })

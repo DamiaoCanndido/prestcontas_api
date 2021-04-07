@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
-import { AdminRepository } from "../repositories/AdminRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 class AuthAdminController {
     
     async create(request: Request, response: Response) {
-        const adminRepository = getCustomRepository(AdminRepository);
+        const userRepository = getCustomRepository(UserRepository);
         const { email, password } = request.body;
 
         if (!email || !password) {
@@ -16,7 +16,10 @@ class AuthAdminController {
                 }) 
         }
 
-        const admin = await adminRepository.findOne({email} , {select: ["id", "name", "email", "password"]});
+        const admin = await userRepository.findOne(
+            {email, type: "admin"}, 
+            {select: ["id", "name", "email", "password"]}
+        );
         
         if (!admin) {
             return response.status(401).json({ error: 'Usuário não existe.' });

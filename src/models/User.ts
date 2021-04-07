@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
+import bcrypt from "bcryptjs";
 import { Zone } from "./Zone";
 
-@Entity("providers")
-class Provider {
+@Entity("users")
+class User {
     @PrimaryColumn()
     readonly id: string;
 
@@ -16,7 +17,7 @@ class Provider {
     @Column()
     cpf: string;
 
-    @Column()
+    @Column("enum")
     type: string;
 
     @Column()
@@ -30,13 +31,13 @@ class Provider {
 
     @ManyToMany(type => Zone)
     @JoinTable({
-        name: "providers_zones",
+        name: "users_zones",
         joinColumn: {
-            name: "providerId",
+            name: "user_id",
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "zoneId",
+            name: "zone_id",
             referencedColumnName: "id"
         }
     })
@@ -47,6 +48,13 @@ class Provider {
             this.id = uuid();
         }
     }
+
+    @BeforeUpdate()
+    @BeforeInsert()
+    async cryptPassword() {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    }
 }
 
-export { Provider };
+export { User };

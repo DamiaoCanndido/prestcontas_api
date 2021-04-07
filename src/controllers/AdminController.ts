@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
-import { AdminRepository } from "../repositories/AdminRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 class AdminController {
 
     async index(request: Request, response: Response){
-        const adminRepository = getCustomRepository(AdminRepository);
-        const allAdmins = await adminRepository.find();
+        const userRepository = getCustomRepository(UserRepository);
+        const allAdmins = await userRepository.find({ type: "admin" });
         return response.status(200).json(allAdmins);
     }
 
@@ -28,8 +28,8 @@ class AdminController {
                 })
         }
 
-        const adminRepository = getCustomRepository(AdminRepository);
-        const adminAlreadyExists = await adminRepository.findOne({email});
+        const userRepository = getCustomRepository(UserRepository);
+        const adminAlreadyExists = await userRepository.findOne({email});
 
         if(password !== repeatPassword) {
             return response.status(400).json({
@@ -43,13 +43,14 @@ class AdminController {
             });
         }
 
-        const admin = adminRepository.create({
+        const admin = userRepository.create({
             name,
             email,
+            type: "admin",
             password,
         })
 
-        await adminRepository.save(admin);
+        await userRepository.save(admin);
 
         delete admin.password;
 
@@ -57,9 +58,9 @@ class AdminController {
     }
 
     async destroy(request: Request, response: Response) {
-        const adminRepository = getCustomRepository(AdminRepository);
+        const userRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const admin = await adminRepository.findOne({id: request.userId});
+        const admin = await userRepository.findOne({id: request.userId});
 
         if (!admin) {
             return response.json({
@@ -67,7 +68,7 @@ class AdminController {
             })
         }
 
-        await adminRepository.delete({ id });
+        await userRepository.delete({ id });
         return response.status(200).json(admin);
     }
 }

@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { Provider } from "./Provider";
+import { User } from "./User";
 
 @Entity("zones")
 class Zone {
@@ -34,19 +34,19 @@ class Zone {
     @CreateDateColumn()
     created_at: Date;
 
-    @ManyToMany(type => Provider)
+    @ManyToMany(type => User)
     @JoinTable({
-        name: "providers_zones",
+        name: "users_zones",
         joinColumn: {
-            name: "zoneId",
+            name: "zone_id",
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "providerId",
+            name: "user_id",
             referencedColumnName: "id"
         }
     })
-    providers: Provider[];
+    users: User[];
 
     constructor() {
         if(!this.id) {

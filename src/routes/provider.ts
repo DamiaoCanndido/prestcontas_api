@@ -2,7 +2,7 @@ import express from "express";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
 import AuthProviderController from "../controllers/AuthProviderController";
 import ProviderController from "../controllers/ProviderController";
-import ProviderZoneController from "../controllers/ProviderZoneController";
+import ProviderZoneController from "../controllers/UserZoneController";
 
 
 const router = express.Router();

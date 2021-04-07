@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-@Entity("providers_zones")
-class ProviderZone {
+@Entity("users_zones")
+class UserZone {
     @PrimaryColumn()
     readonly id: string;
 
     @Column()
-    providerId: string;
+    user_id: string;
 
     @Column()
-    zoneId: string;
+    zone_id: string;
 
     constructor() {
         if(!this.id) {
@@ -19,4 +19,4 @@ class ProviderZone {
     }
 }
 
-export { ProviderZone };
+export { UserZone };

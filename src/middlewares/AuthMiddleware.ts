@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AdminRepository } from "../repositories/AdminRepository";
+import { UserRepository } from "../repositories/UserRepository";
 import jwt from "jsonwebtoken";
 import { getCustomRepository } from "typeorm";
 
@@ -11,7 +11,7 @@ interface TokenPayload {
 
 class AuthMiddleware {
     async auth(request: Request, response: Response, next: NextFunction){
-        const adminRepository = getCustomRepository(AdminRepository);
+        const userRepository = getCustomRepository(UserRepository);
         const { authorization } = request.headers;
 
         if(!authorization) {
@@ -26,7 +26,7 @@ class AuthMiddleware {
             const data = jwt.verify(token, process.env.JWT_SECRET);
             const { id } = data as TokenPayload;
             request.userId = id;
-            const user = await adminRepository.findOne({id: request.userId});
+            const user = await userRepository.findOne({id: request.userId});
             request.userType = user.type;
             return next();
         } catch(err) {

@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
-import { ProviderRepository } from "../repositories/ProvidersRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 class AuthProviderController {
     
     async create(request: Request, response: Response) {
-        const providersRepository = getCustomRepository(ProviderRepository);
+        const userRepository = getCustomRepository(UserRepository);
         const { email, cpf, password } = request.body;
 
         if (!password) {
@@ -16,8 +15,8 @@ class AuthProviderController {
                 }) 
         }
 
-        const provider = await providersRepository.find({ 
-            where: [ { email }, { cpf } ] 
+        const provider = await userRepository.find({ 
+            where: [ { email }, { cpf }, {type: "provider"} ] 
         });
         
         if (provider.length <= 0) {

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import generator from "generate-password";
-import { ProviderRepository } from "../repositories/ProvidersRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 class ProviderController {
 
     async index(request: Request, response: Response){
-        const providersRepository = getCustomRepository(ProviderRepository);
-        const allProviders = await providersRepository.find({relations:["zones"]});
+        const usersRepository = getCustomRepository(UserRepository);
+        const allProviders = await usersRepository.find({type: "provider"});
         return response.status(200).json(allProviders);
     }
 
@@ -30,9 +30,9 @@ class ProviderController {
                 }) 
         }
         
-        const providersRepository = getCustomRepository(ProviderRepository);
+        const usersRepository = getCustomRepository(UserRepository);
 
-        const providerAlreadyExists = await providersRepository.find({
+        const providerAlreadyExists = await usersRepository.find({
             where: [
                 {email},
                 {cpf},
@@ -51,23 +51,24 @@ class ProviderController {
             numbers: true,
         })
 
-        const provider = providersRepository.create({
+        const provider = usersRepository.create({
             name,
             email,
+            type: "provider",
             cpf,
             phone,
             password,
         })
 
-        await providersRepository.save(provider);
+        await usersRepository.save(provider);
 
         return response.status(201).json(provider);
     }
 
     async destroy(request: Request, response: Response) {
-        const providersRepository = getCustomRepository(ProviderRepository);
+        const usersRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const provider = await providersRepository.findOne({id: request.userId});
+        const provider = await usersRepository.findOne({id: request.userId});
 
         if (!provider || request.userType !== "admin") {
             return response.json({
@@ -75,7 +76,7 @@ class ProviderController {
             })
         }
 
-        await providersRepository.delete({ id });
+        await usersRepository.delete({ id });
         return response.status(200).json(provider);
     }
 } 

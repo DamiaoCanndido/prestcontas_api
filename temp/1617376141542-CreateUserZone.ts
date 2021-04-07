@@ -5,7 +5,7 @@ export class CreateProviderZone1617376141542 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "providers_zones",
+                name: "users_zones",
                 columns: [
                     {
                         name: "id",
@@ -13,20 +13,20 @@ export class CreateProviderZone1617376141542 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
-                        name: "providerId",
+                        name: "user_id",
                         type: "uuid",
                     },
                     {
-                        name: "zoneId",
+                        name: "zone_id",
                         type: "uuid",
                     },
                 ],
                 foreignKeys: [
                     {
-                        name: "FKProviderId",
-                        referencedTableName: "providers",
+                        name: "FKUserId",
+                        referencedTableName: "users",
                         referencedColumnNames: ["id"],
-                        columnNames: ["providerId"],
+                        columnNames: ["user_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     },
@@ -34,7 +34,7 @@ export class CreateProviderZone1617376141542 implements MigrationInterface {
                         name: "FKZoneId",
                         referencedTableName: "zones",
                         referencedColumnNames: ["id"],
-                        columnNames: ["zoneId"],
+                        columnNames: ["zone_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     },
@@ -44,7 +44,7 @@ export class CreateProviderZone1617376141542 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("providers_zones");
+        await queryRunner.dropTable("users_zones");
     }
 
 }

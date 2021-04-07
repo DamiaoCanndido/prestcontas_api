@@ -13,7 +13,7 @@ export class CreateDistrict1617484718975 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
-                        name: "cityId",
+                        name: "city_id",
                         type: "uuid",
                     },
                     {
@@ -26,7 +26,7 @@ export class CreateDistrict1617484718975 implements MigrationInterface {
                         name: "FKCityId",
                         referencedTableName: "cities",
                         referencedColumnNames: ["id"],
-                        columnNames: ["cityId"],
+                        columnNames: ["city_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     },

@@ -3,7 +3,6 @@ import { Client, Language } from "@googlemaps/google-maps-services-js";
 import { ReverseGeocodingLocationType } from "@googlemaps/google-maps-services-js/dist/geocode/reversegeocode";
 import { getCustomRepository } from "typeorm";
 import { ZoneRepository } from "../repositories/ZoneRepository";
-import { ProviderRepository } from "../repositories/ProvidersRepository";
 
 class ZoneController {
     async index(request: Request, response: Response){
@@ -13,7 +12,6 @@ class ZoneController {
     }
     async create(request: Request, response: Response){
         const zoneRepository = getCustomRepository(ZoneRepository);
-        const providerRepository = getCustomRepository(ProviderRepository);
 
         const { city, sector, district, street, description, latitude, longitude } = request.body;
 

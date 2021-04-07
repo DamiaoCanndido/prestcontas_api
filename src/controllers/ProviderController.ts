@@ -67,7 +67,7 @@ class ProviderController {
     async destroy(request: Request, response: Response) {
         const providersRepository = getCustomRepository(ProviderRepository);
         const { id } = request.params;
-        const provider = await providersRepository.findOne({id});
+        const provider = await providersRepository.findOne({id: request.userId});
 
         if (!provider || request.userType !== "admin") {
             return response.json({

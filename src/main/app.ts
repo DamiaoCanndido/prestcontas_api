@@ -5,8 +5,14 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import express from "express";
 import "../database";
-import { router } from "../routes";
 import adminRoute from "../routes/admin";
+import providerRoute from "../routes/provider";
+import cityRoute from "../routes/city";
+import streetRoute from "../routes/street";
+import districtRoute from "../routes/district";
+import benefitedRoute from "../routes/benefited";
+import zoneRoute from "../routes/zone";
+import supplyRoute from "../routes/supply";
 
 dotenv.config();
 
@@ -20,6 +26,12 @@ app.use(cookieParser());
 app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 
 app.use(adminRoute);
-app.use(router);
+app.use(providerRoute);
+app.use(cityRoute);
+app.use(districtRoute);
+app.use(streetRoute);
+app.use(zoneRoute);
+app.use(benefitedRoute);
+app.use(supplyRoute);
 
 export { app };

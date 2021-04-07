@@ -16,7 +16,7 @@ class AuthAdminController {
                 }) 
         }
 
-        const admin = await adminRepository.findOne({ email }, { select: ["password"] });
+        const admin = await adminRepository.findOne({email} , {select: ["id", "name", "email", "password"]});
         
         if (!admin) {
             return response.status(401).json({ error: 'Usuário não existe.' });

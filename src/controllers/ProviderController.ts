@@ -11,6 +11,15 @@ class ProviderController {
         return response.status(200).json(allProviders);
     }
 
+    async show(request: Request, response: Response){
+        const { id } = request.params;
+        const usersRepository = getCustomRepository(UserRepository);
+        const allProviders = await usersRepository
+            .findOne({id, type: "provider"}, /*{relations: ["zones"]}*/
+        );
+        return response.status(200).json(allProviders);
+    }
+
     async create(request: Request, response: Response){
         const { 
             name, 
@@ -51,6 +60,8 @@ class ProviderController {
             numbers: true,
         })
 
+        console.log(password);
+
         const provider = usersRepository.create({
             name,
             email,
@@ -77,7 +88,7 @@ class ProviderController {
         }
 
         await usersRepository.delete({ id });
-        return response.status(200).json(provider);
+        return response.status(200).json({ message: "Forcenedor deletado." });
     }
 } 
 

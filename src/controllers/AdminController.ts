@@ -69,7 +69,7 @@ class AdminController {
         }
 
         await userRepository.delete({ id });
-        return response.status(200).json(admin);
+        return response.status(200).json({ message: "Admin deletado." });
     }
 }
 

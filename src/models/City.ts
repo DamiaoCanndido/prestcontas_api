@@ -11,7 +11,7 @@ class City {
     name: string;
 
     @OneToMany(() => District, district => district.city)
-    @JoinColumn({name: "districtId"})
+    @JoinColumn({name: "district_id"})
     district: District[];
 
     constructor() {

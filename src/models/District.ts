@@ -9,17 +9,17 @@ class District {
     readonly id: string;
 
     @Column()
-    cityId: string;
+    city_id: string;
 
     @Column()
     name: string;
 
     @ManyToOne(() => City, city => city.district)
-    @JoinColumn({name: "cityId"})
+    @JoinColumn({name: "city_id"})
     city: City;
 
     @OneToMany(() => Street, street => street.district)
-    @JoinColumn({name: "districtId"})
+    @JoinColumn({name: "district_id"})
     streets: Street[];
 
     constructor() {

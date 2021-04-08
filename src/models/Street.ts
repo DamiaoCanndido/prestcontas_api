@@ -8,13 +8,13 @@ class Street {
     readonly id: string;
 
     @Column()
-    districtId: string;
+    district_id: string;
 
     @Column()
     name: string;
 
     @ManyToOne(() => District, district => district.streets)
-    @JoinColumn({name: "districtId"})
+    @JoinColumn({name: "district_id"})
     district: District;
 
     constructor() {

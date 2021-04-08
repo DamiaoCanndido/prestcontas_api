@@ -6,7 +6,7 @@ class DistrictController {
     async index(request: Request, response: Response){
         const districtRepository = getCustomRepository(DistrictRepository);
         const { cityId } = request.params;
-        const district = await districtRepository.findOne({ cityId }, { relations: ["city", "streets"] });
+        const district = await districtRepository.findOne({ city_id: cityId }, { relations: ["city", "streets"] });
         return response.json(district);
     }
 
@@ -15,7 +15,7 @@ class DistrictController {
         const { name } = request.body;
         const { cityId } = request.params;
         const district = districtRepository.create({
-            cityId,
+            city_id: cityId,
             name
         });
         await districtRepository.save(district);

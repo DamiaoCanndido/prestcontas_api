@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getCustomRepository, getTreeRepository } from "typeorm";
+import { getCustomRepository } from "typeorm";
 import { CityRepository } from "../repositories/CityRepository";
  
 class CityController {

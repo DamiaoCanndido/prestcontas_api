@@ -13,7 +13,7 @@ export class CreateVehicle1617031769562 implements MigrationInterface {
                         isPrimary: true,
                     },
                     { 
-                        name: "provider_id",
+                        name: "user_id",
                         type: "uuid",
                     },
                     {

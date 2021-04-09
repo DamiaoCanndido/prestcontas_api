@@ -10,12 +10,12 @@ class UserZoneController {
     }
 
     async create(request: Request, response: Response){
-        const { zone_id } = request.params;
+        const { zoneId } = request.params;
         const { user_id } = request.body;
         const userZonesRepository = getCustomRepository(UserZoneRepository);
 
         const user_zone = userZonesRepository.create({
-            zone_id,
+            zone_id: zoneId,
             user_id,
         })
 

@@ -15,7 +15,7 @@ class ProviderController {
         const { id } = request.params;
         const usersRepository = getCustomRepository(UserRepository);
         const allProviders = await usersRepository
-            .findOne({id, type: "provider"}, /*{relations: ["zones"]}*/
+            .findOne({id, type: "provider"}, {relations: ["vehicles", "zones"]}
         );
         return response.status(200).json(allProviders);
     }

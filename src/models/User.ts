@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcryptjs";
 import { Zone } from "./Zone";
+import { Vehicle } from "./Vehicle";
 
 @Entity("users")
 class User {
@@ -28,6 +29,10 @@ class User {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @OneToMany(() => Vehicle, vehicle => vehicle.user)
+    @JoinColumn({name: "user_id"})
+    vehicles: Vehicle[]
 
     @ManyToMany(type => Zone)
     @JoinTable({

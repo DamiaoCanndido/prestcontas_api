@@ -3,6 +3,12 @@ import { getCustomRepository } from "typeorm";
 import { VehicleRepository } from "../repositories/VehicleRepository";
 
 class VehicleController {
+    async index(request: Request, response: Response) {
+        const vehicleRepository = getCustomRepository(VehicleRepository);
+        const allVehicles = await vehicleRepository.find({relations:["user"]});
+        return response.json(allVehicles);
+    }
+
     async create(request: Request, response: Response) {
         const vehicleRepository = getCustomRepository(VehicleRepository);
         const { userId } = request.params;

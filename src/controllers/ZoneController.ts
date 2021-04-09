@@ -7,7 +7,7 @@ import { ZoneRepository } from "../repositories/ZoneRepository";
 class ZoneController {
     async index(request: Request, response: Response){
         const zoneRepository = getCustomRepository(ZoneRepository);
-        const allZones = await zoneRepository.find({relations:["providers"]});
+        const allZones = await zoneRepository.find({relations:["users"]});
         response.json(allZones);
     }
     async create(request: Request, response: Response){

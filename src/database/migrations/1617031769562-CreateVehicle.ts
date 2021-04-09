@@ -45,6 +45,16 @@ export class CreateVehicle1617031769562 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     },
+                ],
+                foreignKeys: [
+                    {
+                        name: "FKUserId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["user_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    }
                 ]
             })
         )

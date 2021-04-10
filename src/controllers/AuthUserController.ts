@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 
-class AuthAdminController {
+class AuthUserController {
     
     async create(request: Request, response: Response) {
         const userRepository = getCustomRepository(UserRepository);
@@ -16,22 +16,22 @@ class AuthAdminController {
                 }) 
         }
 
-        const admin = await userRepository.findOne(
-            {email, type: "admin"}, 
-            {select: ["id", "name", "email", "password"]}
+        const user = await userRepository.findOne(
+            {email}, 
+            {select: ["id", "name", "email", "type", "password"]}
         );
         
-        if (!admin) {
+        if (!user) {
             return response.status(401).json({ error: 'Usuário não existe.' });
         }
 
-        const checkPassword = await bcrypt.compare(password, admin.password);
+        const checkPassword = await bcrypt.compare(password, user.password);
 
         if (!checkPassword) {
             return response.status(401).json({ error: 'Senha não confere.' });
         }
 
-        const { id, name } = admin;
+        const { id, name, type } = user;
 
         const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIREIN,
@@ -45,7 +45,7 @@ class AuthAdminController {
 
         return response
             .cookie("token", token, options)
-            .json({ id, name, email, token }
+            .json({ id, name, email, type, token }
         );
     }
 
@@ -58,4 +58,4 @@ class AuthAdminController {
     }
 }
 
-export default new AuthAdminController();
+export default new AuthUserController();

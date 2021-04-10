@@ -1,11 +1,11 @@
 import express from "express";
 import AdminController from "../controllers/AdminController";
-import AuthAdminController from "../controllers/AuthAdiminController";
+import AuthUserController from "../controllers/AuthUserController";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
 
 const router = express.Router();
 
-router.post('/admin/auth', AuthAdminController.create);
+router.post('/auth', AuthUserController.create);
 router.post('/admin', AdminController.create);
 
 // todas as rotas abaixo serão autenticadas

@@ -5,9 +5,7 @@ import { BenefitedRepository } from "../repositories/BenefitedsRepository";
 class BenefitedController {
     async index(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
-        const allBenefiteds = await benefitedRepository.find({
-            relations: ["provider"],
-        });
+        const allBenefiteds = await benefitedRepository.find({relations: ["zone"]});
         return response.json(allBenefiteds);
     }
 
@@ -56,7 +54,6 @@ class BenefitedController {
         }
 
         const benefited = benefitedRepository.create({
-            provider_id: request.userId,
             name, 
             cpf,
             phone,
@@ -100,8 +97,8 @@ class BenefitedController {
         const { id } = request.params;
         const benefited = await benefitedRepository.findOne({id});
 
-        if (benefited.provider_id !== request.userId) {
-            return response.status(403).json({
+        if (request.userType !== "admin") {
+            return response.status(400).json({
                 error: "Você não pode fazer isso."
             })
         }

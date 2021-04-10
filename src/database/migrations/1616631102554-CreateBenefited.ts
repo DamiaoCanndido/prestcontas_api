@@ -13,10 +13,6 @@ export class CreateBenefited1616631102554 implements MigrationInterface {
                         isPrimary: true,
                     },
                     { 
-                        name: "user_id",
-                        type: "uuid",
-                    },
-                    { 
                         name: "zone_id",
                         type: "uuid",
                     },
@@ -57,14 +53,13 @@ export class CreateBenefited1616631102554 implements MigrationInterface {
                 ],
                 foreignKeys: [
                     {
-                        name: "FKUser",
-                        referencedTableName: "users",
+                        name: "FKZoneId",
+                        referencedTableName: "zones",
                         referencedColumnNames: ["id"],
-                        columnNames: ["user_id"],
+                        columnNames: ["zone_id"],
                         onUpdate: "CASCADE",
-                        // ativada em desenvolvimento
-                        // onDelete: "CASCADE",
-                    }
+                        onDelete: "CASCADE",
+                    },
                 ]
             })
         )

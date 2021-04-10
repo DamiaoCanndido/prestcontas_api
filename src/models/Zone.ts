@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Benefited } from "./Benefited";
 import { User } from "./User";
 
 @Entity("zones")
@@ -47,6 +48,10 @@ class Zone {
         }
     })
     users: User[];
+
+    @OneToMany(() => Benefited, benefited => benefited.zone)
+    @JoinColumn({name: "zone_id"})
+    benefiteds: Benefited[];
 
     constructor() {
         if(!this.id) {

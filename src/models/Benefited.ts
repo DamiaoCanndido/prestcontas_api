@@ -1,6 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { User } from "./User";
 import { Zone } from "./Zone";
 
 @Entity("benefiteds")
@@ -9,14 +8,7 @@ class Benefited {
     readonly id: string;
 
     @Column()
-    provider_id: string;
-
-    @Column()
     zone_id: string;
-
-    @ManyToOne(() => User)
-    @JoinColumn({ name: "user_id" })
-    users: User;
 
     @Column()
     name: string;

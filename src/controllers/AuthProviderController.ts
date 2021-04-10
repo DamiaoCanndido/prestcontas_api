@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 
@@ -22,8 +23,10 @@ class AuthProviderController {
         if (provider.length <= 0) {
             return response.status(401).json({ error: 'Usuário não existe.' });
         }
+        
+        const checkPassword = await bcrypt.compare(password, provider[0].password);
 
-        if (password !== provider[0].password) {
+        if (!checkPassword) {
             return response.status(401).json({ error: 'Senha não confere.' });
         }
 

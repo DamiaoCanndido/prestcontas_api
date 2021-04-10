@@ -73,7 +73,7 @@ class ProviderController {
 
         await usersRepository.save(provider);
 
-        return response.status(201).json(provider);
+        return response.status(201).json({provider, password: password});
     }
 
     async destroy(request: Request, response: Response) {

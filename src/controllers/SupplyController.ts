@@ -43,7 +43,7 @@ class SupplyController {
         }
 
         supplies = supplyRepository.create({
-            provider_id: request.userId,
+            user_id: request.userId,
             benefited_id: benefitedId,
             amount,
             photos: urls,

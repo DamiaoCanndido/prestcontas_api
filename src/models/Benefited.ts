@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { User } from "./User";
 import { Zone } from "./Zone";
 
 @Entity("benefiteds")
@@ -9,6 +10,9 @@ class Benefited {
 
     @Column()
     zone_id: string;
+
+    @Column()
+    user_id: string;
 
     @Column()
     name: string;
@@ -22,6 +26,10 @@ class Benefited {
     @ManyToOne(() => Zone)
     @JoinColumn({ name: "zone_id" })
     zone: Zone;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "user_id" })
+    user: Zone;
 
     @Column()
     number: string;

@@ -13,7 +13,7 @@ export class CreateSupply1616792505591 implements MigrationInterface {
                         isPrimary: true,
                     },
                     { 
-                        name: "provider_id",
+                        name: "user_id",
                         type: "uuid",
                     },
                     { 

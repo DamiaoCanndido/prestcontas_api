@@ -5,21 +5,20 @@ import { BenefitedRepository } from "../repositories/BenefitedsRepository";
 class BenefitedController {
     async index(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
-        const allBenefiteds = await benefitedRepository.find({relations: ["zone"]});
+        const allBenefiteds = await benefitedRepository.find({relations: ["zone", "user"]});
         return response.json(allBenefiteds);
     }
 
     async myBenefiteds(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
         const myBenefiteds = await benefitedRepository.find({
-             where: { provider_id: request.userId } 
+             where: { user_id: request.userId } 
         });
         return response.json(myBenefiteds);
     }
 
     async create(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
-
         const {
             name, 
             cpf,
@@ -59,6 +58,7 @@ class BenefitedController {
             phone,
             number,
             zone_id,
+            user_id: request.userId,
             latitude,
             longitude,
         })

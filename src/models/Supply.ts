@@ -13,7 +13,7 @@ class Supply {
     readonly id: string;
 
     @Column()
-    provider_id: string;
+    user_id: string;
 
     @Column()
     benefited_id: string;
@@ -38,6 +38,7 @@ class Supply {
 
     @BeforeInsert()
     createPhoto(){
+        console.log(process.env.NODE_ENV);
         if (process.env.NODE_ENV === "development"){
             const photos = this.keys.map((i) => {
                 return `${process.env.APP_URL}/files/${i}`

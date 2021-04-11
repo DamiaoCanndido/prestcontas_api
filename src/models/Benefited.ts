@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { User } from "./User";
 import { Zone } from "./Zone";
@@ -23,6 +23,20 @@ class Benefited {
     @ManyToOne(() => Zone)
     @JoinColumn({ name: "zone_id" })
     zone: Zone;
+
+    @ManyToMany(type => User)
+    @JoinTable({
+        name: "users_benefiteds",
+        joinColumn: {
+            name: "benefited_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "user_id",
+            referencedColumnName: "id"
+        }
+    })
+    users: User[];
 
     @Column()
     number: string;

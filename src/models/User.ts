@@ -1,8 +1,20 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, } from "typeorm";
+import { 
+    BeforeInsert, 
+    BeforeUpdate, 
+    Column, 
+    CreateDateColumn, 
+    Entity, 
+    JoinColumn, 
+    JoinTable, 
+    ManyToMany, 
+    OneToMany, 
+    PrimaryColumn, 
+} from "typeorm";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcryptjs";
 import { Zone } from "./Zone";
 import { Vehicle } from "./Vehicle";
+import { Benefited } from "./Benefited";
 
 @Entity("users")
 class User {
@@ -47,6 +59,20 @@ class User {
         }
     })
     zones: Zone[];
+
+    @ManyToMany(type => Benefited)
+    @JoinTable({
+        name: "users_benefiteds",
+        joinColumn: {
+            name: "user_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "benefited_id",
+            referencedColumnName: "id"
+        }
+    })
+    benefiteds: Benefited[];
 
     constructor() {
         if(!this.id) {

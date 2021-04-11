@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { BenefitedRepository } from "../repositories/BenefitedsRepository";
+import { UserBenefitedRepository } from "../repositories/UserBenefitedRepository";
 
 class BenefitedController {
     async index(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
-        const allBenefiteds = await benefitedRepository.find({relations: ["zone", "user"]});
+        const allBenefiteds = await benefitedRepository.find({relations: ["zone", "users"]});
         return response.json(allBenefiteds);
     }
 
@@ -18,6 +19,7 @@ class BenefitedController {
     }
 
     async create(request: Request, response: Response){
+        const userBenefitedRepository = getCustomRepository(UserBenefitedRepository);
         const benefitedRepository = getCustomRepository(BenefitedRepository);
         const {
             name, 
@@ -62,9 +64,15 @@ class BenefitedController {
             longitude,
         })
 
-        await benefitedRepository.save(benefited);
+        const user_benefited = userBenefitedRepository.create({
+            benefited_id: benefited.id,
+            user_id: request.userId
+        })
 
-        return response.status(201).json(benefited);
+        await benefitedRepository.save(benefited);
+        await userBenefitedRepository.save(user_benefited);
+
+        return response.status(201).json({ benefited, user_benefited });
     }
 
     async update(request: Request, response: Response) {

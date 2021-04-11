@@ -58,7 +58,6 @@ class BenefitedController {
             phone,
             number,
             zone_id,
-            user_id: request.userId,
             latitude,
             longitude,
         })

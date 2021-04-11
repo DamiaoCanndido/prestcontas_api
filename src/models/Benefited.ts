@@ -12,9 +12,6 @@ class Benefited {
     zone_id: string;
 
     @Column()
-    user_id: string;
-
-    @Column()
     name: string;
 
     @Column()
@@ -26,10 +23,6 @@ class Benefited {
     @ManyToOne(() => Zone)
     @JoinColumn({ name: "zone_id" })
     zone: Zone;
-
-    @ManyToOne(() => User)
-    @JoinColumn({ name: "user_id" })
-    user: Zone;
 
     @Column()
     number: string;

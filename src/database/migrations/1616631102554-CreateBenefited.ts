@@ -16,10 +16,6 @@ export class CreateBenefited1616631102554 implements MigrationInterface {
                         name: "zone_id",
                         type: "uuid",
                     },
-                    { 
-                        name: "user_id",
-                        type: "uuid",
-                    },
                     {
                         name: "name",
                         type: "varchar",
@@ -61,14 +57,6 @@ export class CreateBenefited1616631102554 implements MigrationInterface {
                         referencedTableName: "zones",
                         referencedColumnNames: ["id"],
                         columnNames: ["zone_id"],
-                        onUpdate: "CASCADE",
-                        onDelete: "CASCADE",
-                    },
-                    {
-                        name: "FKUserId",
-                        referencedTableName: "users",
-                        referencedColumnNames: ["id"],
-                        columnNames: ["user_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     },

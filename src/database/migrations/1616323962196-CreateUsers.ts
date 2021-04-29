@@ -13,8 +13,14 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
+                        name: "admin_id",
+                        type: "uuid",
+                        isNullable: true,
+                    },
+                    {
                         name: "name",
-                        type: "varchar"
+                        type: "varchar",
+                        isUnique: true,
                     },
                     {
                         name: "email",
@@ -40,7 +46,7 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                     {
                         name: "type",
                         type: "enum",
-                        enum: ["provider", "admin"]
+                        enum: ["provider", "admin", "master"]
                     },
                     {
                         name: "created_at",

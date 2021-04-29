@@ -5,32 +5,39 @@ import { UserRepository } from "../repositories/UserRepository";
 
 class ProviderController {
 
+    // admin view yours providers
     async index(request: Request, response: Response){
         const usersRepository = getCustomRepository(UserRepository);
-        const allProviders = await usersRepository.find({type: "provider"});
+        const allProviders = await usersRepository.find({
+            where: { type: "provider", admin_id: request.userId }
+        });
         return response.status(200).json(allProviders);
     }
 
+    // admin view one provider
     async show(request: Request, response: Response){
         const { id } = request.params;
         const usersRepository = getCustomRepository(UserRepository);
         const allProviders = await usersRepository
-            .findOne({id, type: "provider"}, {relations: ["vehicles", "zones", "zones.benefiteds"]}
-        );
+            .find(
+                {where: {id, type: "provider", admin_id: request.userId }, 
+                relations: ["vehicles", "zones", "zones.benefiteds"]}
+            );
         return response.status(200).json(allProviders);
     }
 
+    // admin create provider
     async create(request: Request, response: Response){
         const { 
             name, 
             email, 
-            cpf, 
+            cpf,
             phone,
          } = request.body;
 
         if (
             !name || 
-            !email || 
+            !email ||
             !cpf || 
             !phone ) {
 
@@ -65,6 +72,7 @@ class ProviderController {
         const provider = usersRepository.create({
             name,
             email,
+            admin_id: request.userId,
             type: "provider",
             cpf,
             phone,
@@ -76,19 +84,20 @@ class ProviderController {
         return response.status(201).json({provider, password: password});
     }
 
+    // admin delete one provider
     async destroy(request: Request, response: Response) {
         const usersRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const provider = await usersRepository.findOne({id: request.userId});
+        const providerOwner = await usersRepository.findOne({id: request.userId});
 
-        if (!provider || request.userType !== "admin") {
+        if (!providerOwner || request.userType !== "admin") {
             return response.json({
                 error: "Você não pode fazer isso."
             })
         }
 
         await usersRepository.delete({ id });
-        return response.status(200).json({ message: "Forcenedor deletado." });
+        return response.status(200).json({ message: "Fornecedor deletado." });
     }
 } 
 

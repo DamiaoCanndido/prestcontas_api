@@ -1,41 +1,43 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
-export class CreateBenefited1616631102554 implements MigrationInterface {
+export class CreateZone1616631102554 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "benefiteds",
+                name: "zones",
                 columns: [
-                    { 
+                    {
                         name: "id",
                         type: "uuid",
                         isPrimary: true,
                     },
-                    { 
-                        name: "zone_id",
-                        type: "uuid",
-                    },
                     {
-                        name: "name",
+                        name: "city",
                         type: "varchar",
-                        isUnique: true,
                     },
                     {
-                        name: "cpf",
+                        name: "sector",
+                        type: "enum",
+                        enum: ["rural", "urbana"]
+                    },
+                    {
+                        name: "district",
                         type: "varchar",
-                        isUnique: true,
                     },
                     {
-                        name: "phone",
-                        type: "varchar",
-                        isNullable: true,
-                        isUnique: true,
-                    },
-                    {
-                        name: "number",
+                        name: "street",
                         type: "varchar",
                         isNullable: true,
+                    },
+                    {
+                        name: "description",
+                        type: "text",
+                        isNullable: true,
+                    },
+                    {
+                        name: "formatted_address",
+                        type: "varchar"
                     },
                     {
                         name: "latitude",
@@ -51,22 +53,12 @@ export class CreateBenefited1616631102554 implements MigrationInterface {
                         default: "now()",
                     },
                 ],
-                foreignKeys: [
-                    {
-                        name: "FKZoneId",
-                        referencedTableName: "zones",
-                        referencedColumnNames: ["id"],
-                        columnNames: ["zone_id"],
-                        onUpdate: "CASCADE",
-                        onDelete: "CASCADE",
-                    },
-                ]
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("benefiteds");
+        await queryRunner.dropTable("zones");
     }
 
 }

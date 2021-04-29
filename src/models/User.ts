@@ -22,6 +22,9 @@ class User {
     readonly id: string;
 
     @Column()
+    admin_id: string;
+
+    @Column()
     name: string;
 
     @Column()

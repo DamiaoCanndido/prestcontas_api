@@ -4,11 +4,14 @@ import { UserRepository } from "../repositories/UserRepository";
 
 class AdminController {
 
+    // Irá para o usuário MASTER...
+    
     async index(request: Request, response: Response){
         const userRepository = getCustomRepository(UserRepository);
         const allAdmins = await userRepository.find({ type: "admin" });
         return response.status(200).json(allAdmins);
     }
+    
 
     async create(request: Request, response: Response) {
         const { 
@@ -18,9 +21,8 @@ class AdminController {
             repeatPassword
          } = request.body;
 
-         if (
-            !name || 
-            !email || 
+         if (!name || 
+            !email ||
             !password || 
             !repeatPassword) {
                 return response.status(400).json({
@@ -60,9 +62,9 @@ class AdminController {
     async destroy(request: Request, response: Response) {
         const userRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const admin = await userRepository.findOne({id: request.userId});
+        const adminOwner = await userRepository.findOne({id: request.userId});
 
-        if (!admin) {
+        if (!adminOwner || request.userType === "master") {
             return response.json({
                 error: "Admin não existe."
             })

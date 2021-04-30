@@ -17,12 +17,14 @@ class AdminController {
         const { 
             name, 
             email,
+            cpf_cnpj,
             password,
             repeatPassword
          } = request.body;
 
          if (!name || 
             !email ||
+            !cpf_cnpj ||
             !password || 
             !repeatPassword) {
                 return response.status(400).json({
@@ -49,6 +51,7 @@ class AdminController {
             name,
             email,
             type: "admin",
+            cpf_cnpj,
             password,
         })
 

@@ -31,7 +31,7 @@ class User {
     email: string;
 
     @Column()
-    cpf: string;
+    cpf_cnpj: string;
 
     @Column("enum")
     type: string;

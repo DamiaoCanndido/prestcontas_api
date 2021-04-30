@@ -32,14 +32,14 @@ class ProviderController {
         const { 
             name, 
             email, 
-            cpf,
+            cpf_cnpj,
             phone,
          } = request.body;
 
         if (
             !name || 
             !email ||
-            !cpf || 
+            !cpf_cnpj || 
             !phone ) {
 
                 return response.status(400).json({
@@ -52,7 +52,7 @@ class ProviderController {
         const providerAlreadyExists = await usersRepository.find({
             where: [
                 {email},
-                {cpf},
+                {cpf_cnpj},
                 {phone},
             ]
         })
@@ -75,7 +75,7 @@ class ProviderController {
             email,
             admin_id: request.userId,
             type: "provider",
-            cpf,
+            cpf_cnpj,
             phone,
             password,
         })

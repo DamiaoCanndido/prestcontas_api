@@ -33,7 +33,7 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         isUnique: true,
                     },
                     {
-                        name: "cpf",
+                        name: "cpf_cnpj",
                         type: "varchar",
                         isUnique: true,
                         isNullable: true,

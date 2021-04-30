@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
+import { UserTypes } from "../protocols/UserTypes";
 import { UserRepository } from "../repositories/UserRepository";
 
 class AdminController {
@@ -8,7 +9,7 @@ class AdminController {
     
     async index(request: Request, response: Response){
         const userRepository = getCustomRepository(UserRepository);
-        const allAdmins = await userRepository.find({ type: "admin" });
+        const allAdmins = await userRepository.find({ type: UserTypes.ADMIN });
         return response.status(200).json(allAdmins);
     }
     
@@ -50,7 +51,7 @@ class AdminController {
         const admin = userRepository.create({
             name,
             email,
-            type: "admin",
+            type: UserTypes.ADMIN,
             cpf_cnpj,
             password,
         })

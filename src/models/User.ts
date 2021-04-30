@@ -16,6 +16,7 @@ import bcrypt from "bcryptjs";
 import { Zone } from "./Zone";
 import { Vehicle } from "./Vehicle";
 import { Benefited } from "./Benefited";
+import { UserTypes } from "../protocols/UserTypes";
 
 @Entity("users")
 class User {
@@ -26,6 +27,9 @@ class User {
     admin_id: string;
 
     @Column()
+    master_id: string;
+
+    @Column()
     name: string;
 
     @Column()
@@ -34,8 +38,8 @@ class User {
     @Column()
     cpf_cnpj: string;
 
-    @Column("enum")
-    type: string;
+    @Column({ type: "enum", enum: UserTypes, default: UserTypes.PROVIDER })
+    type: UserTypes;
 
     @Column()
     phone: string;

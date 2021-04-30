@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import generator from "generate-password";
 import { UserRepository } from "../repositories/UserRepository";
+import { UserTypes } from "../protocols/UserTypes";
 
 class ProviderController {
 
@@ -74,7 +75,7 @@ class ProviderController {
             name,
             email,
             admin_id: request.userId,
-            type: "provider",
+            type: UserTypes.PROVIDER,
             cpf_cnpj,
             phone,
             password,

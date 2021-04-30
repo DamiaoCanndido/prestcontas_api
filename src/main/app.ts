@@ -6,6 +6,7 @@ import path from "path";
 import express from "express";
 import "../database";
 import adminRoute from "../routes/admin";
+import masterRoute from "../routes/master";
 import providerRoute from "../routes/provider";
 import cityRoute from "../routes/city";
 import streetRoute from "../routes/street";
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/files", express.static(path.resolve(__dirname, "..", "..", "uploads")));
 
 app.use(adminRoute);
+app.use(masterRoute);
 app.use(providerRoute);
 app.use(cityRoute);
 app.use(districtRoute);

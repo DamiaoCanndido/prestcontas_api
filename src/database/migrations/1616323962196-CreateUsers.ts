@@ -13,6 +13,11 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
+                        name: "master_id",
+                        type: "uuid",
+                        isNullable: true,
+                    },
+                    {
                         name: "admin_id",
                         type: "uuid",
                         isNullable: true,
@@ -53,6 +58,16 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     },
+                ],
+                foreignKeys: [
+                    {
+                        name: "FKAdminId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["admin_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    }
                 ]
             })
         )

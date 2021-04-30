@@ -9,11 +9,11 @@ const router = express.Router();
 
 router.post('/provider/auth', AuthProviderController.create);
 
-router.get('/provider', AuthMiddleware.auth, ProviderController.index);
+router.get('/provider', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.index);
 router.get('/provider/:id', AuthMiddleware.auth, ProviderController.show);
 router.get('/provider/auth', AuthMiddleware.auth, AuthProviderController.logout);
 router.post('/provider', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.create);
-router.delete('/provider/:id', AuthMiddleware.auth, ProviderController.destroy);
+router.delete('/provider/:id', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.destroy);
 
 router.get('/provider/zone', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderZoneController.index);
 router.post('/provider/:zoneId', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderZoneController.create);

@@ -14,9 +14,10 @@ class ProviderController {
         return response.status(200).json(allProviders);
     }
 
-    // admin view one provider
+    // admin, provider view one provider
     async show(request: Request, response: Response){
         const { id } = request.params;
+        console.log(request.userId)
         const usersRepository = getCustomRepository(UserRepository);
         const allProviders = await usersRepository
             .find(

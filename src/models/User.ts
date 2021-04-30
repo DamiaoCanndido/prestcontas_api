@@ -7,6 +7,7 @@ import {
     JoinColumn, 
     JoinTable, 
     ManyToMany, 
+    ManyToOne, 
     OneToMany, 
     PrimaryColumn, 
 } from "typeorm";
@@ -44,6 +45,14 @@ class User {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @ManyToOne(() => User)
+    @JoinColumn({name: "admin_id"})
+    admins: User
+
+    @ManyToOne(() => User)
+    @JoinColumn({name: "master_id"})
+    masters: User
 
     @OneToMany(() => Vehicle, vehicle => vehicle.user)
     @JoinColumn({name: "user_id"})

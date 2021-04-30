@@ -67,7 +67,15 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         columnNames: ["admin_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
-                    }
+                    },
+                    {
+                        name: "FKMasterId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["master_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    },
                 ]
             })
         )

@@ -1,17 +1,13 @@
 import express from "express";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
-import AuthProviderController from "../controllers/AuthProviderController";
 import ProviderController from "../controllers/ProviderController";
 import ProviderZoneController from "../controllers/UserZoneController";
 
 
 const router = express.Router();
 
-router.post('/provider/auth', AuthProviderController.create);
-
 router.get('/provider', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.index);
 router.get('/provider/:id', AuthMiddleware.auth, ProviderController.show);
-router.get('/provider/auth', AuthMiddleware.auth, AuthProviderController.logout);
 router.post('/provider', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.create);
 router.delete('/provider/:id', AuthMiddleware.auth, AuthMiddleware.protect(), ProviderController.destroy);
 

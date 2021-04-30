@@ -52,7 +52,9 @@ export class CreateUsers1616323962196 implements MigrationInterface {
                         name: "type",
                         type: "enum",
                         enum: ["provider", "admin", "boss"],
-                        default: "'provider'"
+                        default: "'provider'",
+                        // enumname same name
+                        enumName: "UserTypes"
                     },
                     {
                         name: "created_at",

@@ -5,6 +5,7 @@ import { getCustomRepository } from "typeorm";
 import { ZoneRepository } from "../repositories/ZoneRepository";
 
 class ZoneController {
+    // boss
     async index(request: Request, response: Response){
         const zoneRepository = getCustomRepository(ZoneRepository);
         const allZones = await zoneRepository.find({relations:["users", "benefiteds"]});
@@ -13,9 +14,18 @@ class ZoneController {
     async create(request: Request, response: Response){
         const zoneRepository = getCustomRepository(ZoneRepository);
 
-        const { city, sector, district, street, description, latitude, longitude } = request.body;
+        const { 
+            city, 
+            sector, 
+            district, 
+            street, 
+            description, 
+            latitude, 
+            longitude,
+            radius
+         } = request.body;
 
-        if (!city || !sector || !district) {
+        if (!city || !sector || !district || !latitude || !longitude || !radius) {
             return response.status(400).json({
                 error: "Está faltando dados."
             })
@@ -55,6 +65,7 @@ class ZoneController {
             formatted_address, 
             latitude: !latitude ? lat : latitude, 
             longitude: !longitude ? lng : longitude,
+            radius,
         })
 
         await zoneRepository.save(zone);

@@ -48,6 +48,10 @@ export class CreateZone1616631102554 implements MigrationInterface {
                         type: "decimal",
                     },
                     {
+                        name: "radius",
+                        type: "decimal",
+                    },
+                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()",

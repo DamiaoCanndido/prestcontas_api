@@ -52,6 +52,7 @@ class AdminController {
             name,
             email,
             type: UserTypes.ADMIN,
+            master_id: request.userId,
             cpf_cnpj,
             password,
         })
@@ -68,7 +69,7 @@ class AdminController {
         const { id } = request.params;
         const adminOwner = await userRepository.findOne({id: request.userId});
 
-        if (!adminOwner || request.userType === "master") {
+        if (!adminOwner || request.userType !== "boss") {
             return response.json({
                 error: "Admin não existe."
             })

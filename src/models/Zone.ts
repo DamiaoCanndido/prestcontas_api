@@ -32,6 +32,9 @@ class Zone {
     @Column("decimal")
     longitude: number;
 
+    @Column("decimal")
+    radius: number;
+
     @CreateDateColumn()
     created_at: Date;
 

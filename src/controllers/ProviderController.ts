@@ -92,7 +92,7 @@ class ProviderController {
         const { id } = request.params;
         const providerOwner = await usersRepository.findOne({id: request.userId});
 
-        if (!providerOwner || request.userType !== "admin") {
+        if (providerOwner.id !== request.userId) { 
             return response.json({
                 error: "Você não pode fazer isso."
             })

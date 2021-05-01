@@ -44,7 +44,7 @@ class VehicleController {
         const { id } = request.params;
         const vehicleOwner = await vehiclesRepository.findOne({user_id: request.userId});
 
-        if (!vehicleOwner || request.userType !== "admin") {
+        if (!vehicleOwner || request.userType !== "boss") {
             return response.json({
                 error: "Você não pode fazer isso."
             })

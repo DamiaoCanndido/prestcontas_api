@@ -36,9 +36,11 @@ class AuthMiddleware {
         }
     }
 
-    protect() {
+    
+
+    protect(...types: string[]) {
         return function protect(request: Request, response: Response, next: NextFunction){
-            if (request.userType !== "admin") {
+            if (!types.includes(request.userType)) {
                 return response
                     .status(401)
                     .json({ 

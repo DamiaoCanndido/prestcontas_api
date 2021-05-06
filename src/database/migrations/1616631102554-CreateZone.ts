@@ -13,22 +13,9 @@ export class CreateZone1616631102554 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
-                        name: "city",
-                        type: "varchar",
-                    },
-                    {
                         name: "sector",
                         type: "enum",
                         enum: ["rural", "urbana"]
-                    },
-                    {
-                        name: "district",
-                        type: "varchar",
-                    },
-                    {
-                        name: "street",
-                        type: "varchar",
-                        isNullable: true,
                     },
                     {
                         name: "description",

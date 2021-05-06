@@ -8,17 +8,8 @@ class Zone {
     @PrimaryColumn()
     readonly id: string;
 
-    @Column()
-    city: string;
-
     @Column("enum")
     sector: string;
-
-    @Column()
-    district: string;
-
-    @Column()
-    street: string;
 
     @Column()
     description: string;

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { Client, Language } from "@googlemaps/google-maps-services-js";
-import { ReverseGeocodingLocationType } from "@googlemaps/google-maps-services-js/dist/geocode/reversegeocode";
 import { getCustomRepository } from "typeorm";
 import { ZoneRepository } from "../repositories/ZoneRepository";
+import { ZonesServices } from "../services/ZonesServices";
 
 class ZoneController {
     // boss
@@ -11,6 +10,23 @@ class ZoneController {
         const allZones = await zoneRepository.find({relations:["users", "benefiteds"]});
         response.json(allZones);
     }
+
+    async createByCoor(request: Request, response: Response){
+        const { latitude, longitude, radius, description, sector } = request.body;
+
+        const zonesServices = new ZonesServices();
+
+        try {
+            const zone = await zonesServices.createByCoor({
+                latitude, longitude, description, radius, sector,
+            })
+            return response.status(201).json(zone);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
+        }
+    }
+
     // async create(request: Request, response: Response){
     //     const zoneRepository = getCustomRepository(ZoneRepository);
 
@@ -85,31 +101,6 @@ class ZoneController {
         }
         await zoneRepository.delete({id});
         response.json(zone);
-    }
-
-    async createByCoor(request: Request, response: Response){
-        const client = new Client({});
-
-        const { lat, lng, rad } = request.body;
-
-        const coor = { lat, lng };
-       
-        const res = await client.reverseGeocode({
-            params: {
-                key: "AIzaSyDXYiQ3nVEA-dZSm6I3swzW1-uyxD7iu4c",
-                language: Language.pt_BR,
-                latlng: coor,
-                location_type: [ReverseGeocodingLocationType.GEOMETRIC_CENTER]
-            }
-        })
-
-        return response.json({
-            local: res.data.results[0].formatted_address,
-            lat,
-            lng,
-            rad,
-        })
-        
     }
 }
 

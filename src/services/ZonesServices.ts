@@ -13,7 +13,7 @@ class ZonesServices {
         this.zoneRepository = getCustomRepository(ZoneRepository);
     }
 
-    async createByCoor({ latitude, longitude, radius, description, sector }: UserCoor): Promise<Zone> {
+    async createByCoor({adminId, latitude, longitude, radius, description, sector }: UserCoor): Promise<Zone> {
         const client = new Client({});
 
         if (!latitude || !longitude || !radius || !description || !sector) {
@@ -30,6 +30,7 @@ class ZonesServices {
         })
 
         const zone = this.zoneRepository.create({
+            admin_id: adminId,
             latitude,
             longitude,
             radius,

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Benefited } from "./Benefited";
 import { User } from "./User";
@@ -7,6 +7,9 @@ import { User } from "./User";
 class Zone {
     @PrimaryColumn()
     readonly id: string;
+
+    @Column()
+    admin_id: string;
 
     @Column("enum")
     sector: string;
@@ -28,6 +31,10 @@ class Zone {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "admin_id" })
+    user: User;
 
     @ManyToMany(type => User)
     @JoinTable({

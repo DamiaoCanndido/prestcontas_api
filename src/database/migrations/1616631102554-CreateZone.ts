@@ -13,6 +13,10 @@ export class CreateZone1616631102554 implements MigrationInterface {
                         isPrimary: true,
                     },
                     {
+                        name: "admin_id",
+                        type: "uuid",
+                    },
+                    {
                         name: "sector",
                         type: "enum",
                         enum: ["rural", "urbana"]
@@ -44,6 +48,16 @@ export class CreateZone1616631102554 implements MigrationInterface {
                         default: "now()",
                     },
                 ],
+                foreignKeys: [
+                    {
+                        name: "FKAdminId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["admin_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    },
+                ]
             })
         )
     }

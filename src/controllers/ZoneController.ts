@@ -13,12 +13,13 @@ class ZoneController {
 
     async createByCoor(request: Request, response: Response){
         const { latitude, longitude, radius, description, sector } = request.body;
+        const adminId = request.userId;
 
         const zonesServices = new ZonesServices();
 
         try {
             const zone = await zonesServices.createByCoor({
-                latitude, longitude, description, radius, sector,
+               adminId ,latitude, longitude, description, radius, sector,
             })
             return response.status(201).json(zone);
         } catch (err) {

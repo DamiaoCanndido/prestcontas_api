@@ -11,6 +11,16 @@ class ZoneController {
         response.json(allZones);
     }
 
+    async myZones(request: Request, response: Response) {
+        const adminId = request.userId;
+
+        const zonesServices = new ZonesServices();
+
+        const zones = await zonesServices.myZones(adminId);
+
+        return response.status(201).json(zones);
+    }
+
     async createByCoor(request: Request, response: Response){
         const { latitude, longitude, radius, description, sector } = request.body;
         const adminId = request.userId;

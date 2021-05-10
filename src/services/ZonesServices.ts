@@ -13,6 +13,11 @@ class ZonesServices {
         this.zoneRepository = getCustomRepository(ZoneRepository);
     }
 
+    async myZones(adminId: string) {
+       const zones = this.zoneRepository.find({admin_id: adminId});
+       return zones;
+    }
+
     async createByCoor({adminId, latitude, longitude, radius, description, sector }: UserCoor): Promise<Zone> {
         const client = new Client({});
 

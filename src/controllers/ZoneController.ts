@@ -18,7 +18,7 @@ class ZoneController {
 
         const zones = await zonesServices.myZones(adminId);
 
-        return response.status(201).json(zones);
+        return response.json(zones);
     }
 
     async createByCoor(request: Request, response: Response){

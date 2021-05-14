@@ -1,12 +1,26 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UserZoneRepository } from "../repositories/UserZoneRepository";
+import { ZoneRepository } from "../repositories/ZoneRepository";
 
 class UserZoneController {
     async index(request: Request, response: Response){
         const userZonesRepository = getCustomRepository(UserZoneRepository);
-        const allPZ = await userZonesRepository.find();
-        return response.json(allPZ);
+        const zoneRepository = getCustomRepository(ZoneRepository);
+
+        const { userId } = request.params;
+
+        const allPZ = await userZonesRepository.find({where: { user_id: userId }});
+
+        let zonesIds: string[] = [];
+
+        allPZ.forEach((elem) => {
+            zonesIds.push(elem.zone_id);
+        })
+
+        const zonesOfProvider = await zoneRepository.findByIds(zonesIds);
+
+        return response.json(zonesOfProvider);
     }
 
     async create(request: Request, response: Response){

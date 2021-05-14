@@ -14,7 +14,7 @@ class ZonesServices {
     }
 
     async myZones(adminId: string) {
-       const zones = this.zoneRepository.find({admin_id: adminId});
+       const zones = await this.zoneRepository.find({where: {admin_id: adminId}, relations: ["users"]});
        return zones;
     }
 

@@ -12,6 +12,9 @@ class Benefited {
     zone_id: string;
 
     @Column()
+    user_id: string;
+
+    @Column()
     name: string;
 
     @Column()
@@ -24,19 +27,9 @@ class Benefited {
     @JoinColumn({ name: "zone_id" })
     zone: Zone;
 
-    @ManyToMany(type => User)
-    @JoinTable({
-        name: "users_benefiteds",
-        joinColumn: {
-            name: "benefited_id",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "user_id",
-            referencedColumnName: "id"
-        }
-    })
-    users: User[];
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "user_id" })
+    user: User;
 
     @Column()
     number: string;

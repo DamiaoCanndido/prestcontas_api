@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { BenefitedRepository } from "../repositories/BenefitedsRepository";
 import { UserBenefitedRepository } from "../repositories/UserBenefitedRepository";
+import { UserRepository } from "../repositories/UserRepository";
 import { ZoneRepository } from "../repositories/ZoneRepository";
 
 class BenefitedController {
     async index(request: Request, response: Response){
         const benefitedRepository = getCustomRepository(BenefitedRepository);
-        const allBenefiteds = await benefitedRepository.find({relations: ["zone", "users"]});
+        const allBenefiteds = await benefitedRepository.find({relations: ["zone", "user"]});
         return response.json(allBenefiteds);
     }
 
@@ -20,9 +21,10 @@ class BenefitedController {
     }
 
     async create(request: Request, response: Response){
-        const userBenefitedRepository = getCustomRepository(UserBenefitedRepository);
         const zoneRepository = getCustomRepository(ZoneRepository);
+        const userRepository = getCustomRepository(UserRepository);
         const benefitedRepository = getCustomRepository(BenefitedRepository);
+
         const {
             name, 
             cpf,
@@ -45,10 +47,17 @@ class BenefitedController {
         }
 
         const zone = await zoneRepository.find({ id: zone_id });
+        const user = await userRepository.find({ id: request.userId });
 
         if (!zone) {
             return response.status(400).json({
                 error: "Localidade não existe."
+            });
+        }
+
+        if (!user) {
+            return response.status(400).json({
+                error: "Usuário não existe."
             });
         }
 
@@ -71,17 +80,12 @@ class BenefitedController {
             phone,
             number,
             zone_id,
+            user_id: request.userId,
             latitude,
             longitude,
         })
 
-        const user_benefited = userBenefitedRepository.create({
-            benefited_id: benefited.id,
-            user_id: request.userId
-        })
-
         await benefitedRepository.save(benefited);
-        await userBenefitedRepository.save(user_benefited);
 
         return response.status(201).json(benefited);
     }

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { BenefitedRepository } from "../repositories/BenefitedsRepository";
 import { UserBenefitedRepository } from "../repositories/UserBenefitedRepository";
+import { ZoneRepository } from "../repositories/ZoneRepository";
 
 class BenefitedController {
     async index(request: Request, response: Response){
@@ -20,6 +21,7 @@ class BenefitedController {
 
     async create(request: Request, response: Response){
         const userBenefitedRepository = getCustomRepository(UserBenefitedRepository);
+        const zoneRepository = getCustomRepository(ZoneRepository);
         const benefitedRepository = getCustomRepository(BenefitedRepository);
         const {
             name, 
@@ -34,11 +36,20 @@ class BenefitedController {
         if (
             !name ||
             !cpf ||
+            !zone_id ||
             !latitude ||
             !longitude) {
                 return response.status(400).json({
                     error: "Algum dado faltando."
                 });
+        }
+
+        const zone = await zoneRepository.find({ id: zone_id });
+
+        if (!zone) {
+            return response.status(400).json({
+                error: "Localidade não existe."
+            });
         }
 
         const benefitedAlreadyExists = await benefitedRepository.find({
@@ -72,7 +83,7 @@ class BenefitedController {
         await benefitedRepository.save(benefited);
         await userBenefitedRepository.save(user_benefited);
 
-        return response.status(201).json({ benefited, user_benefited });
+        return response.status(201).json(benefited);
     }
 
     async update(request: Request, response: Response) {

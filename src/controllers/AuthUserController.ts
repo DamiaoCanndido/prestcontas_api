@@ -3,50 +3,31 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
+import { AuthUsersServices } from "../services/AuthUsersServices";
 
 class AuthUserController {
     
     async create(request: Request, response: Response) {
-        const userRepository = getCustomRepository(UserRepository);
         const { email, password } = request.body;
 
-        if (!email || !password) {
-                return response.status(400).json({
-                    error: "Algum dado faltando."
-                }) 
-        }
+        const authUsersServices = new AuthUsersServices();
 
-        const user = await userRepository.findOne(
-            {email}, 
-            {select: ["id", "name", "email", "type", "password"]}
-        );
-        
-        if (!user) {
-            return response.status(401).json({ error: 'Usuário não existe.' });
-        }
-
-        const checkPassword = await bcrypt.compare(password, user.password);
-
-        if (!checkPassword) {
-            return response.status(401).json({ error: 'Senha não confere.' });
-        }
-
-        const { id, name, type } = user;
-
-        const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIREIN,
-        });
-
-        const options = {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        };
-
-        return response
-            .cookie("token", token, options)
-            .json({ id, name, email, type, token }
-        );
+        try {
+            const user = await authUsersServices.create(email, password);
+            return response
+                .cookie("token", user.token, user.options)
+                .json({ 
+                    id: user.id, 
+                    name: user.name, 
+                    email: user.email, 
+                    type: user.type, 
+                    token: user.token 
+                }
+            );
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
+        } 
     }
 
     async logout(request: Request, response: Response) {

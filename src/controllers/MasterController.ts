@@ -14,7 +14,7 @@ class MasterController {
                 email,
                 password,
                 repeatPassword,
-            }, UserTypes.BOSS);
+            }, UserTypes.MASTER);
 
             return response.status(201).json(user);
         } catch (err) {

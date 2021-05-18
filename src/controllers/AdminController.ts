@@ -2,17 +2,17 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UserTypes } from "../protocols/UserTypes";
 import { UserRepository } from "../repositories/UserRepository";
+import { AdminsServices } from "../services/AdminsServices";
 
 class AdminController {
 
     // Irá para o usuário MASTER...
     
     async index(request: Request, response: Response){
-        const userRepository = getCustomRepository(UserRepository);
-        const allAdmins = await userRepository.find({ type: UserTypes.ADMIN });
+        const adminsServices = new AdminsServices();
+        const allAdmins = await adminsServices.index();
         return response.status(200).json(allAdmins);
     }
-    
 
     async create(request: Request, response: Response) {
         const { 
@@ -23,60 +23,37 @@ class AdminController {
             repeatPassword
          } = request.body;
 
-         if (!name || 
-            !email ||
-            !cpf_cnpj ||
-            !password || 
-            !repeatPassword) {
-                return response.status(400).json({
-                    error: "Algum dado faltando."
-                })
+        const adminsServices = new AdminsServices();
+
+        try {
+            const user = await adminsServices.create({
+                    name,
+                    email,
+                    cpf_cnpj,
+                    password,
+                    repeatPassword,
+                }, 
+                UserTypes.ADMIN,
+            )
+            return response.status(201).json(user);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        const userRepository = getCustomRepository(UserRepository);
-        const adminAlreadyExists = await userRepository.findOne({email});
-
-        if(password !== repeatPassword) {
-            return response.status(400).json({
-                error: "Senhas diferentes."
-            })
-        }
-
-        if (adminAlreadyExists) {
-            return response.status(400).json({
-                error: "Algum dado já foi cadastrado"
-            });
-        }
-
-        const admin = userRepository.create({
-            name,
-            email,
-            type: UserTypes.ADMIN,
-            master_id: request.userId,
-            cpf_cnpj,
-            password,
-        })
-
-        await userRepository.save(admin);
-
-        delete admin.password;
-
-        return response.status(201).json(admin);
     }
 
     async destroy(request: Request, response: Response) {
-        const userRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const adminOwner = await userRepository.findOne({id: request.userId});
 
-        if (!adminOwner || request.userType !== "boss") {
-            return response.json({
-                error: "Admin não existe."
-            })
+        const adminsServices = new AdminsServices();
+
+        try {
+            await adminsServices.destroy(id, request.userType);
+            return response.status(200).json({ message: "Admin deletado." });
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        await userRepository.delete({ id });
-        return response.status(200).json({ message: "Admin deletado." });
     }
 }
 

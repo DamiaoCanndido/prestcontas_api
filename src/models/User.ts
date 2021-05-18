@@ -38,7 +38,11 @@ class User {
     @Column()
     cpf_cnpj: string;
 
-    @Column({ type: "enum", enum: UserTypes, default: UserTypes.PROVIDER })
+    @Column({ 
+        type: "enum", 
+        enum: UserTypes, 
+        default: UserTypes.PROVIDER,
+    })
     type: UserTypes;
 
     @Column()

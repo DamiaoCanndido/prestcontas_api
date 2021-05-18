@@ -56,7 +56,7 @@ class AdminsServices {
             throw new Error("Admin não existe.");
         }
 
-        await this.userRepository.delete(id);
+        await this.userRepository.delete({id});
 
         return { message: "Admin deletado." };
     }

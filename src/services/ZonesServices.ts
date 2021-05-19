@@ -48,6 +48,16 @@ class ZonesServices {
 
         return zone;
     }
+
+    async destroy(id: string) {
+        const zone = await this.zoneRepository.findOne({id});
+        if (!zone) {
+            throw new Error("Localidade não existe.")
+        }
+        await this.zoneRepository.delete({id});
+
+        return { message: "Zona deletada." };
+    }
 }
 
 export { ZonesServices };

@@ -39,16 +39,16 @@ class ZoneController {
     }
 
     async destroy(request: Request, response: Response) {
-        const zoneRepository = getCustomRepository(ZoneRepository);
         const { id } = request.params;
-        const zone = await zoneRepository.findOne({id});
-        if (!zone) {
-            return response.json({
-                error: "Localidade não existe."
-            })
+        const zonesServices = new ZonesServices();
+        
+        try {
+            const zone = await zonesServices.destroy(id);
+            response.json(zone);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-        await zoneRepository.delete({id});
-        response.json(zone);
     }
 }
 

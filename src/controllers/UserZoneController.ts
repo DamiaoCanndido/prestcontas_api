@@ -2,47 +2,37 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UserZoneRepository } from "../repositories/UserZoneRepository";
 import { ZoneRepository } from "../repositories/ZoneRepository";
+import { UsersZonesServices } from "../services/UsersZonesServices";
 
 class UserZoneController {
     async index(request: Request, response: Response){
-        const userZonesRepository = getCustomRepository(UserZoneRepository);
-        const zoneRepository = getCustomRepository(ZoneRepository);
-
         const { userId } = request.params;
 
-        const allPZ = await userZonesRepository.find({where: { user_id: userId }});
+        const userZoneServices = new UsersZonesServices();
 
-        let zonesIds: string[] = [];
-
-        allPZ.forEach((elem) => {
-            zonesIds.push(elem.zone_id);
-        })
-
-        const zonesOfProvider = await zoneRepository.findByIds(zonesIds);
-
-        return response.json(zonesOfProvider);
+        try {
+            const zonesOfProvider = await userZoneServices.index(userId);
+            return response.json(zonesOfProvider);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
+        }
+        
     }
 
     async create(request: Request, response: Response){
         const { zoneId } = request.params;
         const { user_id } = request.body;
-        const userZonesRepository = getCustomRepository(UserZoneRepository);
+        
+        const userZoneServices = new UsersZonesServices();
 
-        const userZoneExists = await userZonesRepository.findOne({ user_id, zone_id: zoneId });
-
-        if (userZoneExists) {
-            return response.status(400).json({ 
-                error: "Já existe um fornecedor nessa área." 
-            })
+        try {
+            const user_zone = await userZoneServices.create(zoneId, user_id);
+            return response.status(201).json(user_zone);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        const user_zone = userZonesRepository.create({
-            zone_id: zoneId,
-            user_id,
-        })
-
-        await userZonesRepository.save(user_zone);
-        return response.status(201).json(user_zone);
     }
 }
 

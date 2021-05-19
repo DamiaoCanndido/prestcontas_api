@@ -38,69 +38,6 @@ class ZoneController {
         }
     }
 
-    // async create(request: Request, response: Response){
-    //     const zoneRepository = getCustomRepository(ZoneRepository);
-
-    //     const { 
-    //         city, 
-    //         sector, 
-    //         district, 
-    //         street, 
-    //         description, 
-    //         latitude, 
-    //         longitude,
-    //         radius
-    //      } = request.body;
-
-    //     if (!city || !sector || !district || !latitude || !longitude || !radius) {
-    //         return response.status(400).json({
-    //             error: "Está faltando dados."
-    //         })
-    //     }
-
-    //     const client = new Client({});
-
-    //     let addressForm: string;
-        
-    //     if (street) {
-    //         addressForm = `${street} - `;
-    //     } else {
-    //         addressForm = "";
-    //     }
-
-    //     const address = `${addressForm}${district} ,${city} - PB ,Brasil`
-       
-    //     const full_address = await client.geocode({
-    //         params: {
-    //             key: "AIzaSyDXYiQ3nVEA-dZSm6I3swzW1-uyxD7iu4c",
-    //             language: "pt-BR",
-    //             address: address,
-    //         }
-    //     })
-
-    //     const formatted_address = full_address.data.results[0].formatted_address;
-
-    //     let lat: number = full_address.data.results[0].geometry.location.lat;
-    //     let lng: number = full_address.data.results[0].geometry.location.lng;
-        
-    //     const zone = zoneRepository.create({
-    //         city, 
-    //         sector, 
-    //         district, 
-    //         street, 
-    //         description, 
-    //         formatted_address, 
-    //         latitude: !latitude ? lat : latitude, 
-    //         longitude: !longitude ? lng : longitude,
-    //         radius,
-    //     })
-
-    //     await zoneRepository.save(zone);
-
-    //     return response.status(201).json(zone);
-        
-    // }
-
     async destroy(request: Request, response: Response) {
         const zoneRepository = getCustomRepository(ZoneRepository);
         const { id } = request.params;

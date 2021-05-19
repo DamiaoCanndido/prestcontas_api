@@ -17,7 +17,7 @@ class AdminsServices {
         return allAdmins;
     }
 
-    async create({ name, email, cpf_cnpj, password, repeatPassword }: IUserCreate, type: UserTypes): Promise<User> {
+    async create({ name, email, cpf_cnpj, password, repeatPassword, masterId }: IUserCreate, type: UserTypes): Promise<User> {
         const userExists = await this.userRepository.findOne({ email });
 
         if (!name || 
@@ -42,6 +42,7 @@ class AdminsServices {
             type,
             cpf_cnpj,
             password,
+            master_id: masterId,
         })
         
         await this.userRepository.save(user);

@@ -32,6 +32,7 @@ class AdminController {
                     cpf_cnpj,
                     password,
                     repeatPassword,
+                    masterId: request.userId,
                 }, 
                 UserTypes.ADMIN,
             )

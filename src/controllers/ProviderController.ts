@@ -3,16 +3,16 @@ import { getCustomRepository } from "typeorm";
 import generator from "generate-password";
 import { UserRepository } from "../repositories/UserRepository";
 import { UserTypes } from "../protocols/UserTypes";
+import { ProvidersServices } from "../services/ProvidersServices";
 
 class ProviderController {
 
     // admin view yours providers
     async index(request: Request, response: Response){
-        const usersRepository = getCustomRepository(UserRepository);
-        const allProviders = await usersRepository.find({
-            where: { type: "provider", admin_id: request.userId }
-        });
-        return response.status(200).json(allProviders);
+        // const usersRepository = getCustomRepository(UserRepository);
+        const providersServices = new ProvidersServices();
+        const allProviders = await providersServices.index(request.userId);
+        return response.json(allProviders);
     }
 
     // admin, provider view one provider
@@ -30,6 +30,8 @@ class ProviderController {
 
     // admin create provider
     async create(request: Request, response: Response){
+        const providersServices = new ProvidersServices();
+
         const { 
             name, 
             email, 
@@ -37,53 +39,22 @@ class ProviderController {
             phone,
          } = request.body;
 
-        if (
-            !name || 
-            !email ||
-            !cpf_cnpj || 
-            !phone ) {
+        try {
+            const provider = await providersServices.create({
+                name, 
+                email, 
+                adminId: request.userId, 
+                cpf_cnpj, 
+                phone
+            })
 
-                return response.status(400).json({
-                    error: "Algum dado faltando."
-                }) 
+            return response.status(201).json(provider);
+        } catch (err) {
+            return response.status(400)
+                .json({ 
+                    error: err.message 
+                });
         }
-        
-        const usersRepository = getCustomRepository(UserRepository);
-
-        const providerAlreadyExists = await usersRepository.find({
-            where: [
-                {email},
-                {cpf_cnpj},
-                {phone},
-            ]
-        })
-
-        if(providerAlreadyExists[0]){
-            return response.status(400).json({
-                error: "Algum dado já foi cadastrado"
-            }) 
-        }
-
-        let password = generator.generate({
-            length: 6,
-            numbers: true,
-        })
-
-        console.log(password);
-
-        const provider = usersRepository.create({
-            name,
-            email,
-            admin_id: request.userId,
-            type: UserTypes.PROVIDER,
-            cpf_cnpj,
-            phone,
-            password,
-        })
-
-        await usersRepository.save(provider);
-
-        return response.status(201).json({provider, password: password});
     }
 
     // admin delete one provider

@@ -16,6 +16,10 @@ export class CreateVehicle1617031769562 implements MigrationInterface {
                         name: "user_id",
                         type: "uuid",
                     },
+                    { 
+                        name: "admin_id",
+                        type: "uuid",
+                    },
                     {
                         name: "vehicle",
                         type: "varchar",
@@ -52,6 +56,14 @@ export class CreateVehicle1617031769562 implements MigrationInterface {
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
                         columnNames: ["user_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    },
+                    {
+                        name: "FKAdminId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["admin_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     }

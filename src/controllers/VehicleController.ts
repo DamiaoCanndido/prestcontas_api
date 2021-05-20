@@ -1,57 +1,44 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
-import { VehicleRepository } from "../repositories/VehicleRepository";
+import { VehiclesServices } from "../services/VehiclesServices";
 
 class VehicleController {
     // admin
     async index(request: Request, response: Response) {
-        const vehicleRepository = getCustomRepository(VehicleRepository);
-        const allVehicles = await vehicleRepository.find({ 
-            // where: { user_id: request.userId }, 
-            relations:["user"]
-        });
+        const vehicleServices = new VehiclesServices();
+        const allVehicles = await vehicleServices.index();
         return response.json(allVehicles);
     }
     // admin
     async create(request: Request, response: Response) {
-        const vehicleRepository = getCustomRepository(VehicleRepository);
         const { userId } = request.params;
         const { vehicle, model, brand, manufacturing, license, size } = request.body;
 
-        if (!vehicle || !model || !brand || !manufacturing || !license || !size) {
-            return response.status(400).json({
-                error: "Está faltando algum dado."
-            });
+        const adminId = request.userId;
+
+        const vehicleServices = new VehiclesServices();
+
+        try {
+            const create_vehicle = await vehicleServices.create({
+                userId, adminId, vehicle, model, brand, manufacturing, license, size,
+            })
+            return response.status(201).json(create_vehicle);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        const create_vehicle = vehicleRepository.create({
-            user_id: userId,
-            vehicle,
-            model,
-            brand,
-            manufacturing,
-            license,
-            size,
-        })
-
-        await vehicleRepository.save(create_vehicle);
-        return response.status(201).json(create_vehicle);
     }
 
     // admin delete vehicle
     async destroy(request: Request, response: Response) {
-        const vehiclesRepository = getCustomRepository(VehicleRepository);
         const { id } = request.params;
-        const vehicleOwner = await vehiclesRepository.findOne({user_id: request.userId});
-
-        if (!vehicleOwner || request.userType !== "boss") {
-            return response.json({
-                error: "Você não pode fazer isso."
-            })
+        const vehicleServices = new VehiclesServices();
+        try {
+            const vehicle = await vehicleServices.destroy(id, request.userId);
+            return response.json(vehicle);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        await vehiclesRepository.delete({ id });
-        return response.status(200).json({ message: "Fornecedor deletado." });
     }
     
 } 

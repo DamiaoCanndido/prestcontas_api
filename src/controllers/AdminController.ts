@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
 import { UserTypes } from "../protocols/UserTypes";
-import { UserRepository } from "../repositories/UserRepository";
 import { AdminsServices } from "../services/AdminsServices";
 
 class AdminController {

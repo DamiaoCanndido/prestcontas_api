@@ -27,7 +27,7 @@ class ZonesServices {
 
         const res = await client.reverseGeocode({
             params: {
-                key: "AIzaSyDXYiQ3nVEA-dZSm6I3swzW1-uyxD7iu4c",
+                key: process.env.GOOGLE_API,
                 language: Language.pt_BR,
                 latlng: { latitude, longitude },
                 location_type: [ReverseGeocodingLocationType.GEOMETRIC_CENTER]

@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
-import { UserZoneRepository } from "../repositories/UserZoneRepository";
-import { ZoneRepository } from "../repositories/ZoneRepository";
 import { UsersZonesServices } from "../services/UsersZonesServices";
 
 class UserZoneController {

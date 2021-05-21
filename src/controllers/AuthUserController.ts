@@ -1,8 +1,4 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { getCustomRepository } from "typeorm";
-import { UserRepository } from "../repositories/UserRepository";
 import { AuthUsersServices } from "../services/AuthUsersServices";
 
 class AuthUserController {

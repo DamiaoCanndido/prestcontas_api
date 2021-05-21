@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
-import generator from "generate-password";
 import { UserRepository } from "../repositories/UserRepository";
-import { UserTypes } from "../protocols/UserTypes";
 import { ProvidersServices } from "../services/ProvidersServices";
 
 class ProviderController {

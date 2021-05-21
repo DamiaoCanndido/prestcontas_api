@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
-import { BenefitedRepository } from "../repositories/BenefitedsRepository";
 import { BenefitedsServices } from "../services/BenefitedsServices";
 
 class BenefitedController {

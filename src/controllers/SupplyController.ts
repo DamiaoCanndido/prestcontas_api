@@ -1,72 +1,41 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
-import { Supply } from "../models/Supply";
-import { BenefitedRepository } from "../repositories/BenefitedsRepository";
-import { SuppliesRepository } from "../repositories/SuppliesRepository";
+import { SuppliesServices } from "../services/SuppliesServices";
 
 class SupplyController {
     async index(request: Request, response: Response){
-        const supplyRepository = getCustomRepository(SuppliesRepository);
-        const allSupplies = await supplyRepository.find();
+        const suppliesServices = new SuppliesServices();
+        const allSupplies = await suppliesServices.index();
         return response.json(allSupplies);
     }
     async create(request: Request, response: Response){
-        const supplyRepository = getCustomRepository(SuppliesRepository);
-        const benefitedRepository = getCustomRepository(BenefitedRepository);
         const { benefitedId } = request.params;
         const { amount } = request.body;
+        const userId = request.userId;
+        const files = request.files as Express.MulterS3.File[] | Express.Multer.File[];
 
-        const benefited = await benefitedRepository.findOne({ where: { id: benefitedId } });
+        const suppliesServices = new SuppliesServices();
 
-        if (!benefited) {
-            return response.status(400).json({
-                error: "Beneficiário inexistente."
-            })
+        try {
+            const supply = await suppliesServices.create({ userId, benefitedId, amount, files });
+            return response.status(201).json(supply);
+        } catch(err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        
-        let images: string[] = [];
-        let urls: string[] = []; // prod
-        let supplies: Supply;
-
-        if (process.env.NODE_ENV === "production") {
-            const files = request.files as Express.MulterS3.File[]; // Express.Multer.File[]
-            files.map((i) => {
-                images.push(i.key);
-                urls.push(i.location); // prod
-            })
-        } else {
-            const files = request.files as Express.Multer.File[]
-            files.map((i) => {
-                images.push(i.filename);
-            })
-        }
-
-        supplies = supplyRepository.create({
-            user_id: request.userId,
-            benefited_id: benefitedId,
-            amount,
-            photos: urls,
-            keys: images,
-        })
-
-        await supplyRepository.save(supplies);
-        return response.status(201).json(supplies);
     }
 
     async destroy(request: Request, response: Response) {
-        const supplyRepository = getCustomRepository(SuppliesRepository);
         const { id } = request.params;
-        const supply = await supplyRepository.findOne({id});
+        const suppliesServices = new SuppliesServices();
 
-        if (!supply) {
-            return response.status(403).json({
-                error: "Você não pode fazer isso."
-            })
+        try {
+            const supply = await suppliesServices.destroy(id);
+            return response.status(200).json(supply);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
-
-        await supplyRepository.remove(supply);
-        return response.status(200).json(supply);
+        
     }
 }
 

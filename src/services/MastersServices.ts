@@ -12,6 +12,11 @@ class MastersServices {
         this.userRepository = getCustomRepository(UserRepository);
     }
 
+    async index() {
+        const users = await this.userRepository.find({where: { type: UserTypes.MASTER }});
+        return users;
+    }
+
     async create({ name, email, password, repeatPassword }: IUserCreate, type: UserTypes): Promise<User> {
         const userExists = await this.userRepository.findOne({ email });
 
@@ -33,6 +38,16 @@ class MastersServices {
         await this.userRepository.save(user);
 
         return user;
+    }
+
+    async destroy(id: string) {
+        const user = await this.userRepository.findOne({id});
+        if (!user) {
+            throw new Error("Usuário não existe.")
+        }
+        await this.userRepository.delete({id});
+
+        return { message: "Usuário deletado." };
     }
 }
 

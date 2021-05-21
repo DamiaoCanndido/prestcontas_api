@@ -3,6 +3,12 @@ import { UserTypes } from "../protocols/UserTypes";
 import { MastersServices } from "../services/MastersServices";
 
 class MasterController {
+    async index(request: Request, response: Response) {
+        const mastersServices = new MastersServices();
+        const users = await mastersServices.index();
+        return response.json(users);
+    }
+
     async create(request: Request, response: Response) {
         const { name, email, password, repeatPassword } = request.body;
 
@@ -21,6 +27,21 @@ class MasterController {
             return response.status(400)
                 .json({ error: err.message });
         }
+    }
+
+    async destroy(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const mastersServices = new MastersServices();
+
+        try {
+            const user = await mastersServices.destroy(id);
+            return response.status(200).json(user);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
+        }
+
     }
 }
 

@@ -3,8 +3,8 @@ module.exports = {
     "url": process.env.DATABASE_URL,
     "logging": true,
     // "synchronize": true,
-    "migrations": [process.env.MIGRATIONS_DEV],
-    "entities": [process.env.ENTITIES_DEV],
+    "migrations": [process.env.MIGRATIONS_PROD],
+    "entities": [process.env.ENTITIES_PROD],
     "cli": {
         "migrationsDir": "./src/database/migrations",
         "entitiesDir": "./src/models"

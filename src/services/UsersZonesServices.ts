@@ -13,7 +13,12 @@ class UsersZonesServices {
         this.userZoneRepository = getCustomRepository(UserZoneRepository);
     }
 
-    async index(userId: string) {
+    async index() {
+        const allPZ = await this.userZoneRepository.find();
+        return allPZ;
+    }
+
+    async showZones(userId: string) {
         const allPZ = await this.userZoneRepository.find({where: { user_id: userId }});
 
         let zonesIds: string[] = [];
@@ -42,6 +47,17 @@ class UsersZonesServices {
         await this.userZoneRepository.save(user_zone);
 
         return user_zone;
+    }
+
+    async destroy(id: string) {
+        const userZone = await this.userZoneRepository.findOne({id});
+
+        if (!userZone) {
+            throw new Error("Localidade não existe.")
+        }
+        await this.userZoneRepository.delete({ id });
+
+        return { message: "Relação com Zona deletada." };
     }
 }
 

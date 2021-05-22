@@ -57,18 +57,18 @@ class ProviderController {
 
     // admin delete one provider
     async destroy(request: Request, response: Response) {
-        const usersRepository = getCustomRepository(UserRepository);
         const { id } = request.params;
-        const providerOwner = await usersRepository.findOne({id: request.userId});
 
-        if (providerOwner.id !== request.userId) { 
-            return response.json({
-                error: "Você não pode fazer isso."
-            })
+        const providersServices = new ProvidersServices();
+
+        try {
+            const user = await providersServices.destroy(id);
+            return response.status(200).json(user);
+        } catch (err) {
+            return response.status(400)
+                .json({ error: err.message });
         }
 
-        await usersRepository.delete({ id });
-        return response.status(200).json({ message: "Fornecedor deletado." });
     }
 } 
 

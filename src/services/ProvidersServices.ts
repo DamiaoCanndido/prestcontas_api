@@ -60,6 +60,16 @@ class ProvidersServices {
 
         return { provider, password };
     }
+
+    async destroy(id: string) {
+        const user = await this.userRepository.findOne({id});
+        if (!user) {
+            throw new Error("Usuário não existe.")
+        }
+        await this.userRepository.delete({id});
+
+        return { message: "Usuário deletado." };
+    }
 }
 
 export { ProvidersServices };

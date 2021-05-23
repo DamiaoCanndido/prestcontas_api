@@ -11,7 +11,7 @@ router.post('/zone', AuthMiddleware.auth, AuthMiddleware.protect("admin", "maste
 router.delete('/zone/:id', AuthMiddleware.auth, AuthMiddleware.protect("admin", "master"), ZoneController.destroy);
 
 router.get('/zone/user', AuthMiddleware.auth, AuthMiddleware.protect("admin"), ProviderZoneController.index);
-router.get('/zone/:userId', AuthMiddleware.auth, AuthMiddleware.protect("admin"), ProviderZoneController.showZones);
+router.get('/zone/:userId', AuthMiddleware.auth, ProviderZoneController.showZones);
 router.post('/zone/:zoneId/provider', AuthMiddleware.auth, AuthMiddleware.protect("admin"), ProviderZoneController.create);
 router.delete('/zone/:userZoneId/provider', AuthMiddleware.auth, AuthMiddleware.protect("admin"), ProviderZoneController.destroy);
 

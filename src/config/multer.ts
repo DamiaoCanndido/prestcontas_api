@@ -42,7 +42,8 @@ export const uploads = {
         const formats = [
             'image/jpeg',
             'image/jpg',
-            'image/png'
+            'image/png',
+            'application/octet-stream',
         ];
         if (formats.includes(file.mimetype)) {
             callback(null, true)

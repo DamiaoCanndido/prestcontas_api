@@ -7,7 +7,7 @@ import { uploads } from "../config/multer";
 const router = express.Router();
 
 router.get('/supply', AuthMiddleware.auth, SupplyController.index);
-router.get('/supply/provider', AuthMiddleware.auth, SupplyController.showByProvider);
+router.get("/supply/provider", AuthMiddleware.auth, SupplyController.showByProvider);
 router.post('/supply/:benefitedId', AuthMiddleware.auth, multer(uploads).array("photos"), SupplyController.create);
 router.delete('/supply/:id', AuthMiddleware.auth, SupplyController.destroy);
 

@@ -7,6 +7,11 @@ class SupplyController {
         const allSupplies = await suppliesServices.index();
         return response.json(allSupplies);
     }
+    async showByProvider(request: Request, response: Response){
+        const suppliesServices = new SuppliesServices();
+        const suppliesCreated = await suppliesServices.showByProvider(request.userId);
+        return response.json(suppliesCreated);
+    }
     async create(request: Request, response: Response){
         const { benefitedId } = request.params;
         const { amount } = request.body;

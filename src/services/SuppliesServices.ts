@@ -19,6 +19,11 @@ class SuppliesServices {
         return supplies;
     }
 
+    async showByProvider(user_id: string) {
+        const supplies = await this.suppliesRepository.find({ where: { user_id } });
+        return supplies;
+    }
+
     async create({userId, benefitedId, amount, files}: ISupplyCreate) {
         const benefited = await this.benefitedRepository.findOne({ where: { id: benefitedId } });
 

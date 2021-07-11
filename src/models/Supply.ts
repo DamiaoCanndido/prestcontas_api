@@ -1,9 +1,19 @@
-import { BeforeInsert, BeforeRemove, Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { 
+    BeforeInsert, 
+    BeforeRemove, 
+    Column, 
+    CreateDateColumn, 
+    Entity, 
+    JoinColumn,
+    ManyToOne, 
+    PrimaryColumn 
+} from "typeorm";
 import aws from "aws-sdk";
 import fs from "fs";
 import { promisify } from "util";
 import path from "path";
 import { v4 as uuid } from "uuid";
+import { User } from "./User";
 
 const s3 = new aws.S3();
 
@@ -29,6 +39,10 @@ class Supply {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "user_id" })
+    user: User;
 
     constructor() {
         if(!this.id) {

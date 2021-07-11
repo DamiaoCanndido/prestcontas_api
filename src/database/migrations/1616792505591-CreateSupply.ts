@@ -39,6 +39,16 @@ export class CreateSupply1616792505591 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     },
+                ],
+                foreignKeys: [
+                    {
+                        name: "FKUserId",
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["user_id"],
+                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE",
+                    },
                 ]
             })
         )

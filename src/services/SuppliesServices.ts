@@ -20,7 +20,7 @@ class SuppliesServices {
     }
 
     async showByProvider(user_id: string) {
-        const supplies = await this.suppliesRepository.find({ where: { user_id } })
+        const supplies = await this.suppliesRepository.find({ where: { user_id }, relations: ["user"] })
         return supplies;
     }
 

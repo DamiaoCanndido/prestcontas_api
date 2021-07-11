@@ -42,10 +42,10 @@ export class CreateSupply1616792505591 implements MigrationInterface {
                 ],
                 foreignKeys: [
                     {
-                        name: "FKUserId",
-                        referencedTableName: "users",
+                        name: "FKBenefitedId",
+                        referencedTableName: "benefiteds",
                         referencedColumnNames: ["id"],
-                        columnNames: ["user_id"],
+                        columnNames: ["benefited_id"],
                         onUpdate: "CASCADE",
                         onDelete: "CASCADE",
                     },
